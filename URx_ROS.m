@@ -4,13 +4,13 @@
 %   can issue commands and trajectories and receive data from ROS enabled
 %   UR manipulators.
 %   
+%   Levi DeVries USNA
+
 %   Updates
 %       - Helmich:  Updated properties. Method convJoints2ROSJoints not
 %       needed? Added inverseKinematics object to improve calculations and
 %       hopefully speed.
 %
-%   Levi DeVries USNA
-
 classdef URx_ROS < matlab.mixin.SetGet
     
     properties(GetAccess = 'public', SetAccess = 'public')

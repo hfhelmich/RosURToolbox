@@ -1,3 +1,6 @@
+%%  ikinPickAndPlace
+%   Purpose: Old ikin function to use if desired. End effector will be
+%   pointed downward at all times.
 function [q_eu,q_ed] = ikinPickAndPlace(X,L)
 
 a1 = -X(2);

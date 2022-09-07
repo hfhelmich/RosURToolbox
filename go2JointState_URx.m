@@ -1,7 +1,26 @@
-function out = go2JointState_URx(time2state, joint_angles)
+%%  go2JointState_URx
+%   
+%   Inputs:
+%       - time2state: number of seconds to travel to desired q (seconds)
+%       - joint_angles: desired angles to send to robot (radians)
+%       - namesp: robot's namespace in ROS
+%
+%   Outputs:
+%       - out: delta between desired q and current q in degrees
+%
+%   L. DeVries 1Feb21
+%
 
-HomePub = rospublisher('/ura/joint_trajectory_MATLAB');
-HomeSub = rossubscriber('/ura/joint_states');
+function out = go2JointState_URx(time2state, joint_angles, namesp)
+
+narginchk(1,3)
+if isequal(namesp, '')
+    HomePub = rospublisher('/joint_trajectory_MATLAB');
+    HomeSub = rossubscriber('/joint_states');
+else
+    HomePub = rospublisher(append('/', namesp, '/joint_trajectory_MATLAB'));
+    HomeSub = rossubscriber(append('/', namesp, '/joint_states'));
+end
 
 pause(1)
 % Create joint state command (need only do once)

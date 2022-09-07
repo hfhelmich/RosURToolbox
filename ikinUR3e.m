@@ -1,3 +1,7 @@
+%%  ikinUR3e
+%   Purpose: Old ikin function with published link lengths for the UR3e.
+%   The 5th joint is strictly positioned for each movement, but can be
+%   adjusted here in the method.
 function [q_eu,q_ed] = ikinUR3e(X)
 
 L = [151.8440 243.5180 212.8800 132.0337 85.2541 92.368];

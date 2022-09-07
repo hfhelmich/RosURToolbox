@@ -1,3 +1,16 @@
+%%  goHome_URx
+%   Purpose:
+%
+%   Inputs:
+%       - time2home: time in seconds to reach desired q [seconds]
+%   Outputs:
+%       - out: delta between desired and current joint position [deg]
+%
+%   L. DeVries 1Feb22
+
+%   Updates:
+%       30Aug22 - added time2home input so user can choose speed.    
+
 function out = goHome_URx(time2Home)
 
 HomePub = rospublisher('/joint_trajectory_MATLAB');
