@@ -10,9 +10,9 @@ function RosURToolboxUpdate
 %   toolboxName{1,1} - github username for the toolbox
 %   toolboxName{1,2} - toolbox name [toolbox name]Toolbox
 toolboxName = {...
-    'hfhelmich','RosMessage'};
+    'hfhelmich','RosUR'};
 
-ToolboxUpdate(v);
+ToolboxUpdate(toolboxName);
 
 end
 
