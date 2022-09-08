@@ -1,4 +1,4 @@
-%%  collectURSim.m
+%%  SCRIPT_collectURSim.m
 %   Running UR10 simulation and saving data. Sections of code here are
 %   useful when saving data in the future.
 %
