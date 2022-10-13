@@ -38,11 +38,8 @@ classdef URx_ROS < matlab.mixin.SetGet
         function obj = URx_ROS(name)
             obj.jointTrajectory = [0; -pi/2; 0; -pi/2; 0; 0];   % Home
             obj.trajPub = rospublisher(append(name,'/joint_trajectory_MATLAB'),'IsLatching',false);
-            pause(0.25);
             obj.jsSub = rossubscriber(append(name,'/joint_states'),'sensor_msgs/JointState',@obj.parseCallback);
-            pause(0.25);
             obj.tfSub = rossubscriber('/tf','tf2_msgs/TFMessage',@obj.tfCallback);
-            pause(0.50);
             tmp = receive(obj.jsSub,0.1);
             obj.jointAngles = tmp.Position;
             obj.jointSpeeds = tmp.Velocity;
@@ -62,7 +59,6 @@ classdef URx_ROS < matlab.mixin.SetGet
         function delete(obj)
             rosshutdown
             clear obj.jsSub obj.trajPub
-            pause(2.0)
             delete(obj);
         end
         
@@ -71,7 +67,6 @@ classdef URx_ROS < matlab.mixin.SetGet
     methods
         % Returns 6x1 current joint angles
         function jointAngles = get.jointAngles(obj) % write as callback instead of direct query
-            disp('Made it to joint angle call')
             tmp = receive(obj.jsSub,0.1);
             % We want to see joints in the correct order when using MATLAB
             % to make programming easier. ROS does not see joint angles in
@@ -82,7 +77,6 @@ classdef URx_ROS < matlab.mixin.SetGet
         
         % Returns 6x1 current joint speeds
         function jointSpeeds = get.jointSpeeds(obj) % write as callback instead of direct query
-            disp('Made it to joint speed call')
             tmp = receive(obj.jsSub,0.1);
             % We want to see joints in the correct order when using MATLAB
             % to make programming easier. ROS does not see joint vels in
@@ -94,7 +88,6 @@ classdef URx_ROS < matlab.mixin.SetGet
         % Returns 6x1 current joint state (first column is angles and
         % second column is speeds)
         function jointState = get.jointState(obj) % write as callback instead of direct query
-            disp('Made it to joint state call')
             tmp = receive(obj.jsSub,0.1);
             jointState = [tmp.Position, tmp.Velocity];
         end
@@ -119,21 +112,30 @@ classdef URx_ROS < matlab.mixin.SetGet
         end
         
         %
-        function msg = send_jointAngles(obj, jAngs)
+        function msg = send_jointAngles(obj, jAngs, time)
             
+            if nargin < 2
+                time = 5.0;
+            end
+
             msg = rosmessage(obj.trajPub);
             msg.JointNames = obj.jointNames_ROS;
             msg.Points(1) = rosmessage('trajectory_msgs/JointTrajectoryPoint');
             
             msg.Points(1).Positions = jAngs;
             msg.Points(1).Velocities = zeros(6,1);
-            msg.Points(1).TimeFromStart.Sec = 5.0;
+            msg.Points(1).TimeFromStart.Sec = time;
             
             send(obj.trajPub,msg);
         end
         
         %
-        function msg = send_taskPos(obj, time, tPos)
+        function msg = send_taskPos(obj, tPos, time)
+
+            if nargin < 2
+                time = 5.0;
+            end
+
             % tPos must be 3x1
             % Adjust the default H for desired task position
             obj.HTform = getTransform(obj.robot, obj.jointAngles, "tool0");
