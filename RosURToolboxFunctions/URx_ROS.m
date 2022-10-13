@@ -40,7 +40,7 @@ classdef URx_ROS < matlab.mixin.SetGet
             obj.trajPub = rospublisher(append(name,'/joint_trajectory_MATLAB'),'IsLatching',false);
             obj.jsSub = rossubscriber(append(name,'/joint_states'),'sensor_msgs/JointState',@obj.parseCallback);
             obj.tfSub = rossubscriber('/tf','tf2_msgs/TFMessage',@obj.tfCallback);
-            tmp = receive(obj.jsSub,0.25);
+            tmp = receive(obj.jsSub,0.50);
             obj.jointAngles = tmp.Position;
             obj.jointSpeeds = tmp.Velocity;
             
@@ -67,7 +67,7 @@ classdef URx_ROS < matlab.mixin.SetGet
     methods
         % Returns 6x1 current joint angles
         function jointAngles = get.jointAngles(obj) % write as callback instead of direct query
-            tmp = receive(obj.jsSub,0.25);
+            tmp = receive(obj.jsSub,0.50);
             % We want to see joints in the correct order when using MATLAB
             % to make programming easier. ROS does not see joint angles in
             % same order.
@@ -77,7 +77,7 @@ classdef URx_ROS < matlab.mixin.SetGet
         
         % Returns 6x1 current joint speeds
         function jointSpeeds = get.jointSpeeds(obj) % write as callback instead of direct query
-            tmp = receive(obj.jsSub,0.25);
+            tmp = receive(obj.jsSub,0.50);
             % We want to see joints in the correct order when using MATLAB
             % to make programming easier. ROS does not see joint vels in
             % same order.
@@ -88,7 +88,7 @@ classdef URx_ROS < matlab.mixin.SetGet
         % Returns 6x1 current joint state (first column is angles and
         % second column is speeds)
         function jointState = get.jointState(obj) % write as callback instead of direct query
-            tmp = receive(obj.jsSub,0.25);
+            tmp = receive(obj.jsSub,0.50);
             jointState = [tmp.Position, tmp.Velocity];
         end
         
