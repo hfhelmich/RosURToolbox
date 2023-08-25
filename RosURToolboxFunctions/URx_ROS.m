@@ -15,7 +15,6 @@ classdef URx_ROS < matlab.mixin.SetGet
     
     properties(GetAccess = 'public', SetAccess = 'public')
         jointTrajectory(6,:) double {mustBeReal,mustBeFinite}
-        
     end
     
     properties(GetAccess = 'public', SetAccess = 'private')
